@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Ray 101 - Długość Oplotu Ekranowanego</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 900px;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .input-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        select, input[type="number"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        select:focus, input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .unit {
+            font-size: 13px;
+            color: #666;
+            margin-top: 4px;
+            font-style: italic;
+        }
+        
+        .result-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .result-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .result-value {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .result-unit {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        
+        .details-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+        
+        .details-section h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            font-weight: 500;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .detail-value {
+            font-weight: 600;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+        
+        .warning-title {
+            font-weight: 600;
+            color: #856404;
+            margin-bottom: 5px;
+        }
+        
+        .warning-text {
+            color: #856404;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 25px;
+        }
+        
+        .info-title {
+            font-weight: 600;
+            color: #0d47a1;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .info-text {
+            color: #0d47a1;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        
+        .formula {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #333;
+            border: 1px solid #e0e0e0;
+        }
+        
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 22px;
+            }
+            
+            .result-value {
+                font-size: 36px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Kalkulator Ray 101</h1>
+            <p>Obliczanie długości oplotu ekranowanego w zależności od średnicy wiązki</p>
+        </div>
+        
+        <div class="content">
+            <div class="input-section">
+                <div class="input-group">
+                    <label for="rozmiar">Rozmiar oplotu Ray 101:</label>
+                    <select id="rozmiar" onchange="calculate()">
+                        <option value="3.0">Ray-101-3.0 (zakres: 2.5-5.0 mm)</option>
+                        <option value="4.0">Ray-101-4.0 (zakres: 3.5-7.5 mm)</option>
+                        <option value="6.0">Ray-101-6.0 (zakres: 4.5-9.5 mm)</option>
+                        <option value="7.5">Ray-101-7.5 (zakres: 7.0-14.0 mm)</option>
+                        <option value="10.0" selected>Ray-101-10.0 (zakres: 8.0-22.0 mm)</option>
+                        <option value="12.5">Ray-101-12.5 (zakres: 11.0-24.0 mm)</option>
+                        <option value="20.0">Ray-101-20.0 (zakres: 16.0-38.0 mm)</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label for="dlugosc">Długość wiązki (L):</label>
+                    <input type="number" id="dlugosc" value="1.2" step="0.01" min="0.01" oninput="calculate()">
+                    <div class="unit">w metrach (m)</div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="srednica">Średnica wiązki (D):</label>
+                    <input type="number" id="srednica" value="18" step="0.1" min="0.1" oninput="calculate()">
+                    <div class="unit">w milimetrach (mm)</div>
+                </div>
+            </div>
+            
+            <div id="warningBox" class="warning" style="display: none;">
+                <div class="warning-title">⚠️ Uwaga</div>
+                <div class="warning-text" id="warningText"></div>
+            </div>
+            
+            <div class="result-section">
+                <div class="result-label">Potrzebna długość oplotu</div>
+                <div class="result-value" id="wynik">1.238</div>
+                <div class="result-unit">metrów</div>
+            </div>
+            
+            <div class="details-section">
+                <h3>Szczegóły obliczeń</h3>
+                <div class="detail-row">
+                    <span class="detail-label">Średnica referencyjna (D_ref)</span>
+                    <span class="detail-value" id="dref">15.0 mm</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Współczynnik k (D/D_ref)</span>
+                    <span class="detail-value" id="k">1.20</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Współczynnik skrócenia (s)</span>
+                    <span class="detail-value" id="s">-0.032</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Korekta długości</span>
+                    <span class="detail-value" id="korekta">+3.8%</span>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <div class="info-title">📐 Wzór obliczeniowy</div>
+                <div class="formula">
+                    L_opl = L × [1 - 0.15×(k-1) - 0.05×(k-1)²]<br>
+                    gdzie: k = D / D_ref
+                </div>
+                <div class="info-text" style="margin-top: 10px;">
+                    <strong>Interpretacja:</strong><br>
+                    • k ≈ 1.0 – środek zakresu, minimalna korekta<br>
+                    • k &gt; 1.0 – oplot się skróci (grubsza wiązka)<br>
+                    • k &lt; 1.0 – oplot się wydłuży (cieńsza wiązka)<br><br>
+                    <strong>Wskazówka:</strong> Zawsze zostaw 2-3% zapasu na obcięcie i mocowanie końców.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const rayData = {
+            '3.0': { dref: 3.75, min: 2.5, max: 5.0 },
+            '4.0': { dref: 5.5, min: 3.5, max: 7.5 },
+            '6.0': { dref: 7.0, min: 4.5, max: 9.5 },
+            '7.5': { dref: 10.5, min: 7.0, max: 14.0 },
+            '10.0': { dref: 15.0, min: 8.0, max: 22.0 },
+            '12.5': { dref: 17.5, min: 11.0, max: 24.0 },
+            '20.0': { dref: 27.0, min: 16.0, max: 38.0 }
+        };
+        
+        function calculate() {
+            const rozmiar = document.getElementById('rozmiar').value;
+            const L = parseFloat(document.getElementById('dlugosc').value);
+            const D = parseFloat(document.getElementById('srednica').value);
+            
+            if (!L || !D || L <= 0 || D <= 0) {
+                return;
+            }
+            
+            const data = rayData[rozmiar];
+            const D_ref = data.dref;
+            const k = D / D_ref;
+            const s = -0.15 * (k - 1) - 0.05 * Math.pow(k - 1, 2);
+            const L_opl = L * (1 + s);
+            
+            // Aktualizacja wyników
+            document.getElementById('wynik').textContent = L_opl.toFixed(3);
+            document.getElementById('dref').textContent = D_ref.toFixed(2) + ' mm';
+            document.getElementById('k').textContent = k.toFixed(2);
+            document.getElementById('s').textContent = s.toFixed(4);
+            
+            const korektaPercent = s * 100;
+            const korektaStr = (korektaPercent >= 0 ? '+' : '') + korektaPercent.toFixed(1) + '%';
+            document.getElementById('korekta').textContent = korektaStr;
+            
+            // Ostrzeżenia
+            const warningBox = document.getElementById('warningBox');
+            const warningText = document.getElementById('warningText');
+            
+            if (D < data.min) {
+                warningBox.style.display = 'block';
+                warningText.textContent = `Średnica wiązki (${D} mm) jest poniżej minimalnego zakresu dla Ray-101-${rozmiar} (min: ${data.min} mm). Oplot może być zbyt luźny.`;
+            } else if (D > data.max) {
+                warningBox.style.display = 'block';
+                warningText.textContent = `Średnica wiązki (${D} mm) przekracza maksymalny zakres dla Ray-101-${rozmiar} (max: ${data.max} mm). Rozważ większy rozmiar oplotu.`;
+            } else {
+                warningBox.style.display = 'none';
+            }
+        }
+        
+        // Oblicz przy załadowaniu strony
+        calculate();
+    </script>
+</body>
+</html>

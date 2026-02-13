@@ -1,370 +1,260 @@
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kalkulator Ray 101 - Długość Oplotu Ekranowanego</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .container {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-width: 900px;
-            width: 100%;
-            overflow: hidden;
-        }
-        
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-        
-        .header h1 {
-            font-size: 28px;
-            margin-bottom: 8px;
-        }
-        
-        .header p {
-            font-size: 14px;
-            opacity: 0.9;
-        }
-        
-        .content {
-            padding: 30px;
-        }
-        
-        .input-section {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 12px;
-            margin-bottom: 25px;
-        }
-        
-        .input-group {
-            margin-bottom: 20px;
-        }
-        
-        .input-group:last-child {
-            margin-bottom: 0;
-        }
-        
-        label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #333;
-            font-size: 14px;
-        }
-        
-        select, input[type="number"] {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: all 0.3s;
-            background: white;
-        }
-        
-        select:focus, input[type="number"]:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-        
-        .unit {
-            font-size: 13px;
-            color: #666;
-            margin-top: 4px;
-            font-style: italic;
-        }
-        
-        .result-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 25px;
-            border-radius: 12px;
-            margin-bottom: 25px;
-            text-align: center;
-        }
-        
-        .result-label {
-            font-size: 14px;
-            opacity: 0.9;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .result-value {
-            font-size: 48px;
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
-        
-        .result-unit {
-            font-size: 18px;
-            opacity: 0.9;
-        }
-        
-        .details-section {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 12px;
-            margin-bottom: 25px;
-        }
-        
-        .details-section h3 {
-            font-size: 18px;
-            margin-bottom: 15px;
-            color: #333;
-        }
-        
-        .detail-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        
-        .detail-row:last-child {
-            border-bottom: none;
-        }
-        
-        .detail-label {
-            font-weight: 500;
-            color: #666;
-            font-size: 14px;
-        }
-        
-        .detail-value {
-            font-weight: 600;
-            color: #333;
-            font-size: 16px;
-        }
-        
-        .warning {
-            background: #fff3cd;
-            border-left: 4px solid #ffc107;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 25px;
-        }
-        
-        .warning-title {
-            font-weight: 600;
-            color: #856404;
-            margin-bottom: 5px;
-        }
-        
-        .warning-text {
-            color: #856404;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-        
-        .info-box {
-            background: #e3f2fd;
-            border-left: 4px solid #2196f3;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 25px;
-        }
-        
-        .info-title {
-            font-weight: 600;
-            color: #0d47a1;
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-        
-        .info-text {
-            color: #0d47a1;
-            font-size: 13px;
-            line-height: 1.6;
-        }
-        
-        .formula {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 10px;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            color: #333;
-            border: 1px solid #e0e0e0;
-        }
-        
-        @media (max-width: 600px) {
-            .header h1 {
-                font-size: 22px;
-            }
-            
-            .result-value {
-                font-size: 36px;
-            }
-            
-            .content {
-                padding: 20px;
-            }
-        }
-    </style>
+<title>🔧 Kalkulator długości cięcia ekranu </title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* { box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; min-height: 100vh; }
+.container { max-width: 420px; margin: 0 auto; background: white; border-radius: 24px; box-shadow: 0 25px 50px rgba(0,0,0,0.25); overflow: hidden; }
+.header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; }
+.header h1 { margin: 0 0 8px 0; font-size: 26px; font-weight: 700; }
+.header p { margin: 0; opacity: 0.95; font-size: 15px; font-style: italic; }
+.content { padding: 30px; }
+.input-group { margin-bottom: 24px; }
+.unit-info { font-size: 13px; color: #555; margin-top: 6px; background: #f8f9ff; padding: 8px 12px; border-radius: 8px; border-left: 4px solid #2196f3; font-style: italic; }
+label { display: block; font-weight: 600; margin-bottom: 10px; color: #333; font-size: 16px; }
+select, input[type="number"] { width: 100%; padding: 18px; border: 2px solid #e1e5e9; border-radius: 16px; font-size: 18px; font-weight: 500; transition: all 0.3s ease; background: white; }
+select:focus, input[type="number"]:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 4px rgba(102,126,234,0.15); transform: translateY(-1px); }
+.result { background: linear-gradient(135deg, #4CAF50, #45a049); color: white; padding: 28px; border-radius: 20px; text-align: center; font-size: 34px; font-weight: 700; margin: 24px 0; box-shadow: 0 12px 30px rgba(76,175,80,0.4); }
+.error { background: linear-gradient(135deg, #f44336, #d32f2f); color: white; padding: 22px; border-radius: 16px; margin: 16px 0; font-size: 18px; font-weight: 600; text-align: center; }
+.warning { background: linear-gradient(135deg, #ff9800, #f57c00); color: white; padding: 22px; border-radius: 16px; margin: 16px 0; font-size: 18px; font-weight: 600; }
+.good { background: linear-gradient(135deg, #4CAF50, #45a049); color: white; padding: 22px; border-radius: 16px; margin: 16px 0; font-size: 18px; font-weight: 600; }
+.zapas { background: linear-gradient(135deg, #FF9800, #F57C00); color: white; padding: 24px; border-radius: 20px; text-align: center; font-size: 26px; font-weight: 700; margin: 20px 0; box-shadow: 0 10px 25px rgba(255,152,0,0.4); }
+.zapas small { opacity: 0.9; font-size: 14px; display: block; margin-top: 4px; }
+.suggest { background: linear-gradient(135deg, #66bb6a, #4caf50); color: white; padding: 20px; border-radius: 16px; margin: 16px 0; font-size: 18px; font-weight: 600; text-align: center; box-shadow: 0 8px 20px rgba(102,187,106,0.4); }
+.btn-group { display: flex; gap: 12px; margin: 28px 0; }
+button { flex: 1; padding: 18px; border: none; border-radius: 16px; font-size: 17px; font-weight: 600; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; }
+.btn-reset { background: linear-gradient(135deg, #ff9800, #fb8c00); color: white; }
+.btn-pdf { background: linear-gradient(135deg, #2196f3, #1976d2); color: white; }
+.btn-unit { background: linear-gradient(135deg, #ff5722, #e64a19); color: white; }
+.history { background: linear-gradient(135deg, #f8f9fa, #e9ecef); border-radius: 16px; padding: 20px; margin-top: 24px; max-height: 220px; overflow-y: auto; border: 1px solid #dee2e6; }
+.history h4 { margin: 0 0 12px 0; color: #495057; font-size: 16px; }
+.history-item { padding: 14px; border-bottom: 1px solid #dee2e6; font-size: 15px; cursor: pointer; transition: background 0.2s; }
+.history-item:hover { background: #e9ecef; border-radius: 8px; }
+.history-item:last-child { border-bottom: none; }
+.history-item span { color: #6c757d; font-size: 13px; }
+table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 14px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+th, td { border: 1px solid #dee2e6; padding: 14px 8px; text-align: center; }
+th { background: linear-gradient(135deg, #667eea, #764ba2); color: white; font-weight: 600; }
+@media (max-width: 480px) { .result { font-size: 28px; padding: 22px; } .container { margin: 10px; border-radius: 20px; } }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Kalkulator Ray 101</h1>
-            <p>Obliczanie długości oplotu ekranowanego w zależności od średnicy wiązki</p>
-        </div>
-        
-        <div class="content">
-            <div class="input-section">
-                <div class="input-group">
-                    <label for="rozmiar">Rozmiar oplotu Ray 101:</label>
-                    <select id="rozmiar" onchange="calculate()">
-                        <option value="3.0">Ray-101-3.0 (zakres: 2.5-5.0 mm)</option>
-                        <option value="4.0">Ray-101-4.0 (zakres: 3.5-7.5 mm)</option>
-                        <option value="6.0">Ray-101-6.0 (zakres: 4.5-9.5 mm)</option>
-                        <option value="7.5">Ray-101-7.5 (zakres: 7.0-14.0 mm)</option>
-                        <option value="10.0" selected>Ray-101-10.0 (zakres: 8.0-22.0 mm)</option>
-                        <option value="12.5">Ray-101-12.5 (zakres: 11.0-24.0 mm)</option>
-                        <option value="20.0">Ray-101-20.0 (zakres: 16.0-38.0 mm)</option>
-                    </select>
-                </div>
-                
-                <div class="input-group">
-                    <label for="dlugosc">Długość wiązki (L):</label>
-                    <input type="number" id="dlugosc" value="1.2" step="0.01" min="0.01" oninput="calculate()">
-                    <div class="unit">w metrach (m)</div>
-                </div>
-                
-                <div class="input-group">
-                    <label for="srednica">Średnica wiązki (D):</label>
-                    <input type="number" id="srednica" value="18" step="0.1" min="0.1" oninput="calculate()">
-                    <div class="unit">w milimetrach (mm)</div>
-                </div>
-            </div>
-            
-            <div id="warningBox" class="warning" style="display: none;">
-                <div class="warning-title">⚠️ Uwaga</div>
-                <div class="warning-text" id="warningText"></div>
-            </div>
-            
-            <div class="result-section">
-                <div class="result-label">Potrzebna długość oplotu</div>
-                <div class="result-value" id="wynik">1.238</div>
-                <div class="result-unit">metrów</div>
-            </div>
-            
-            <div class="details-section">
-                <h3>Szczegóły obliczeń</h3>
-                <div class="detail-row">
-                    <span class="detail-label">Średnica referencyjna (D_ref)</span>
-                    <span class="detail-value" id="dref">15.0 mm</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Współczynnik k (D/D_ref)</span>
-                    <span class="detail-value" id="k">1.20</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Współczynnik skrócenia (s)</span>
-                    <span class="detail-value" id="s">-0.032</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Korekta długości</span>
-                    <span class="detail-value" id="korekta">+3.8%</span>
-                </div>
-            </div>
-            
-            <div class="info-box">
-                <div class="info-title">📐 Wzór obliczeniowy</div>
-                <div class="formula">
-                    L_opl = L × [1 - 0.15×(k-1) - 0.05×(k-1)²]<br>
-                    gdzie: k = D / D_ref
-                </div>
-                <div class="info-text" style="margin-top: 10px;">
-                    <strong>Interpretacja:</strong><br>
-                    • k ≈ 1.0 – środek zakresu, minimalna korekta<br>
-                    • k &gt; 1.0 – oplot się skróci (grubsza wiązka)<br>
-                    • k &lt; 1.0 – oplot się wydłuży (cieńsza wiązka)<br><br>
-                    <strong>Wskazówka:</strong> Zawsze zostaw 2-3% zapasu na obcięcie i mocowanie końców.
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <script>
-        const rayData = {
-            '3.0': { dref: 3.75, min: 2.5, max: 5.0 },
-            '4.0': { dref: 5.5, min: 3.5, max: 7.5 },
-            '6.0': { dref: 7.0, min: 4.5, max: 9.5 },
-            '7.5': { dref: 10.5, min: 7.0, max: 14.0 },
-            '10.0': { dref: 15.0, min: 8.0, max: 22.0 },
-            '12.5': { dref: 17.5, min: 11.0, max: 24.0 },
-            '20.0': { dref: 27.0, min: 16.0, max: 38.0 }
-        };
-        
-        function calculate() {
-            const rozmiar = document.getElementById('rozmiar').value;
-            const L = parseFloat(document.getElementById('dlugosc').value);
-            const D = parseFloat(document.getElementById('srednica').value);
-            
-            if (!L || !D || L <= 0 || D <= 0) {
-                return;
-            }
-            
-            const data = rayData[rozmiar];
-            const D_ref = data.dref;
-            const k = D / D_ref;
-            const s = -0.15 * (k - 1) - 0.05 * Math.pow(k - 1, 2);
-            const L_opl = L * (1 + s);
-            
-            // Aktualizacja wyników
-            document.getElementById('wynik').textContent = L_opl.toFixed(3);
-            document.getElementById('dref').textContent = D_ref.toFixed(2) + ' mm';
-            document.getElementById('k').textContent = k.toFixed(2);
-            document.getElementById('s').textContent = s.toFixed(4);
-            
-            const korektaPercent = s * 100;
-            const korektaStr = (korektaPercent >= 0 ? '+' : '') + korektaPercent.toFixed(1) + '%';
-            document.getElementById('korekta').textContent = korektaStr;
-            
-            // Ostrzeżenia
-            const warningBox = document.getElementById('warningBox');
-            const warningText = document.getElementById('warningText');
-            
-            if (D < data.min) {
-                warningBox.style.display = 'block';
-                warningText.textContent = `Średnica wiązki (${D} mm) jest poniżej minimalnego zakresu dla Ray-101-${rozmiar} (min: ${data.min} mm). Oplot może być zbyt luźny.`;
-            } else if (D > data.max) {
-                warningBox.style.display = 'block';
-                warningText.textContent = `Średnica wiązki (${D} mm) przekracza maksymalny zakres dla Ray-101-${rozmiar} (max: ${data.max} mm). Rozważ większy rozmiar oplotu.`;
-            } else {
-                warningBox.style.display = 'none';
-            }
-        }
-        
-        // Oblicz przy załadowaniu strony
-        calculate();
-    </script>
+<div class="container">
+<div class="header">
+<h1>🔧 Kalkulator długości cięcia ekranu</h1>
+<p>Odpad <strong>zawsze 20cm</strong> | Raychem fizyka</p>
+</div>
+
+<div class="content">
+<div class="input-group">
+<label>💡 Średnica kabla:</label>
+<input type="number" id="D" step="0.1" placeholder="15.0">
+<div class="unit-info" id="D-unit">mm | 📏 cale/inch</div>
+</div>
+
+<div id="suggestSize" class="suggest" style="display:none;">
+💡 <strong>SUGEROWANY: <span id="suggestedRay">--</span></strong>
+</div>
+
+<div class="input-group">
+<label>Rozmiar Ray 101:</label>
+<select id="size">
+<option value="3.0">Ray-101-3.0mm (2.5-5.0)</option>
+<option value="4.0">Ray-101-4.0mm (3.5-7.5)</option>
+<option value="6.0">Ray-101-6.0mm (4.5-9.5)</option>
+<option value="7.5">Ray-101-7.5mm (7.0-14.0)</option>
+<option value="10.0" selected>Ray-101-10.0mm (8.0-22.0)</option>
+<option value="12.5">Ray-101-12.5mm (11.0-24.0)</option>
+<option value="20.0">Ray-101-20.0mm (16.0-38.0)</option>
+</select>
+</div>
+
+<div class="input-group">
+<label>Długość kabla:</label>
+<input type="number" id="L" step="0.1" placeholder="12.0">
+<div class="unit-info" id="L-unit">m | 📏 stopy/ft</div>
+</div>
+
+<div class="btn-group">
+<button onclick="resetCalc()">🔄 Reset</button>
+<button onclick="exportPDF()">📄 PDF</button>
+<button id="unitBtn" onclick="toggleUnits()">📏 Jednostki</button>
+</div>
+
+<div id="result" class="result">Wpisz średnicę i długość</div>
+<div id="status"></div>
+<div id="zapas" class="zapas" style="display:none;">
+Do cięcia: -- <small>+20cm zapas (10cm×2 końce)</small>
+</div>
+
+<div id="history" class="history" style="display:none;">
+<h4>📋 Ostatnie (kliknij przywróć)</h4>
+<div id="historyList"></div>
+</div>
+
+<h3>Zakresy Ray 101</h3>
+<table>
+<tr><th>Ray</th><th>Min</th><th>Max</th></tr>
+<tr><td>3.0</td><td>2.5</td><td>5.0</td></tr>
+<tr><td>4.0</td><td>3.5</td><td>7.5</td></tr>
+<tr><td>6.0</td><td>4.5</td><td>9.5</td></tr>
+<tr><td>7.5</td><td>7.0</td><td>14.0</td></tr>
+<tr><td style="font-weight:bold"><b>10.0</b></td><td style="font-weight:bold"><b>8.0</b></td><td style="font-weight:bold"><b>22.0</b></td></tr>
+<tr><td>12.5</td><td>11.0</td><td>24.0</td></tr>
+<tr><td>20.0</td><td>16.0</td><td>38.0</td></tr>
+</table>
+<p style="font-size:13px;color:#666;">L_cut = L_opl + 0.20m | Raychem kalibrowane [web:21]</p>
+</div>
+
+<script>
+let units = {dia: 'mm', len: 'm'};
+let history = JSON.parse(localStorage.getItem('ray101_history') || '[]');
+
+const ranges = {
+"3.0": {min:2.5, max:5.0, dref:3.75},
+"4.0": {min:3.5, max:7.5, dref:5.5},
+"6.0": {min:4.5, max:9.5, dref:7.0},
+"7.5": {min:7.0, max:14.0, dref:10.5},
+"10.0": {min:8.0, max:22.0, dref:15.0},
+"12.5": {min:11.0, max:24.0, dref:17.5},
+"20.0": {min:16.0, max:38.0, dref:27.0}
+};
+
+function updateUnitsDisplay() {
+  document.getElementById('D-unit').textContent = `mm | 📏 = ${units.dia === 'mm' ? 'cale/inch' : 'mm'}`;
+  document.getElementById('L-unit').textContent = `m | 📏 = ${units.len === 'm' ? 'stopy/ft' : 'm'}`;
+  document.getElementById('unitBtn').textContent = `📏 Jednostki`;
+}
+
+function suggestRay(D_raw) {
+  const D = units.dia === 'in' ? D_raw * 25.4 : D_raw;
+  const suggestDiv = document.getElementById('suggestSize');
+  if (!D || D <= 0) { suggestDiv.style.display = 'none'; return; }
+
+  let suggested = null;
+  for (let size in ranges) {
+    if (D >= ranges[size].min && D <= ranges[size].max) {
+      suggested = size;
+      break;
+    }
+  }
+
+  if (suggested) {
+    document.getElementById('suggestedRay').textContent = `${suggested}mm`;
+    suggestDiv.style.display = 'block';
+    document.getElementById('size').value = suggested;
+    calc();
+  } else {
+    suggestDiv.style.display = 'none';
+  }
+}
+
+function calc() {
+  const size = document.getElementById('size').value;
+  let L_raw = parseFloat(document.getElementById('L').value);
+  let D_raw = parseFloat(document.getElementById('D').value);
+
+  if (isNaN(L_raw) || isNaN(D_raw) || L_raw <= 0 || D_raw <= 0) {
+    document.getElementById('result').textContent = 'Wpisz średnicę i długość';
+    document.getElementById('status').innerHTML = '';
+    document.getElementById('zapas').style.display = 'none';
+    return;
+  }
+
+  let L = units.len === 'ft' ? L_raw * 0.3048 : L_raw;
+  let D = units.dia === 'in' ? D_raw * 25.4 : D_raw;
+
+  const data = ranges[size];
+  const k = D / data.dref;
+  const s = -0.15 * (k - 1) - 0.05 * Math.pow((k - 1), 2);
+  const Lopl = L * (1 + s);
+  const L_cut = Math.max(Lopl + 0.20, 0.25);
+
+  document.getElementById('result').textContent = Lopl.toFixed(2) + (units.len === 'ft' ? ' ft' : ' m');
+  document.getElementById('zapas').style.display = 'block';
+  document.getElementById('zapas').innerHTML = `Do cięcia: <strong>${L_cut.toFixed(2)}${units.len === 'ft' ? ' ft' : ' m'}</strong> <small>+20cm (10cm×2 końce)</small>`;
+
+  const status = document.getElementById('status');
+  const minD_disp = units.dia === 'in' ? (data.min / 25.4).toFixed(2) + ' in' : data.min.toFixed(1) + ' mm';
+  const maxD_disp = units.dia === 'in' ? (data.max / 25.4).toFixed(2) + ' in' : data.max.toFixed(1) + ' mm';
+
+  if (D < data.min) {
+    status.innerHTML = `<div class="warning">⚠️ ZA MAŁA! Min ${minD_disp}</div>`;
+  } else if (D > data.max) {
+    status.innerHTML = `<div class="error">❌ ZA DUŻA! Max ${maxD_disp}</div>`;
+  } else {
+    status.innerHTML = `<div class="good">✅ ${minD_disp} - ${maxD_disp}</div>`;
+  }
+
+  const entry = {size, L: L_raw.toFixed(2), D: D_raw.toFixed(1), Lopl: Lopl.toFixed(2), cut: L_cut.toFixed(2), time: new Date().toLocaleTimeString()};
+  history.unshift(entry);
+  history = history.slice(0, 5);
+  localStorage.setItem('ray101_history', JSON.stringify(history));
+  updateHistory();
+  window.lastCalc = entry;
+}
+
+function resetCalc() {
+  document.getElementById('size').value = '10.0';
+  document.getElementById('L').value = '';
+  document.getElementById('D').value = '';
+  document.getElementById('suggestSize').style.display = 'none';
+  document.getElementById('result').textContent = 'Wpisz średnicę i długość';
+  document.getElementById('status').innerHTML = '';
+  document.getElementById('zapas').style.display = 'none';
+  document.getElementById('history').style.display = 'none';
+}
+
+function toggleUnits() {
+  units.dia = units.dia === 'mm' ? 'in' : 'mm';
+  units.len = units.len === 'm' ? 'ft' : 'm';
+  updateUnitsDisplay();
+  const D_val = parseFloat(document.getElementById('D').value) || 0;
+  suggestRay(D_val);
+  calc();
+}
+
+function updateUnitsDisplay() {
+  document.getElementById('D-unit').textContent = `mm | 📏 = ${units.dia === 'mm' ? 'cale/inch' : 'mm'}`;
+  document.getElementById('L-unit').textContent = `m | 📏 = ${units.len === 'm' ? 'stopy/ft' : 'm'}`;
+  document.getElementById('unitBtn').textContent = `📏 Jednostki`;
+}
+
+function updateHistory() {
+  const list = document.getElementById('historyList');
+  list.innerHTML = history.map(h => 
+    `<div class="history-item" onclick="document.getElementById('size').value='${h.size}'; document.getElementById('D').value='${h.D}'; document.getElementById('L').value='${h.L}'; calc();">
+      Ray${h.size} | D${h.D}mm L${h.L}m → tnij ${h.cut}m <span>${h.time}</span>
+    </div>`
+  ).join('');
+  document.getElementById('history').style.display = history.length ? 'block' : 'none';
+}
+
+function exportPDF() {
+  if (!window.lastCalc) return alert('Oblicz najpierw!');
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  doc.setFontSize(24);
+  doc.text('Ray 101 - Do cięcia', 20, 30);
+  doc.setFontSize(16);
+  doc.text(`Raychem Ray-${window.lastCalc.size}`, 20, 50);
+  doc.text(`Kabel: D=${window.lastCalc.D}mm L=${window.lastCalc.L}m`, 20, 62);
+  doc.text(`Oplot na kablu: ${window.lastCalc.Lopl}m`, 20, 74);
+  doc.text(`<strong>TNIEJ: ${window.lastCalc.cut}m (+20cm zapas)</strong>`, 20, 86);
+  doc.text(`Obliczone: ${window.lastCalc.time}`, 20, 98);
+  doc.save(`Ray101_cut_${window.lastCalc.time.replace(/:/g, '-')}.pdf`);
+}
+
+// Inicjalizacja
+document.getElementById('D').addEventListener('input', e => suggestRay(parseFloat(e.target.value) || 0));
+['size','L'].forEach(id => document.getElementById(id).addEventListener('input', calc));
+updateUnitsDisplay();
+resetCalc();
+</script>
 </body>
 </html>

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -14,10 +13,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 .header p { margin: 0; opacity: 0.95; font-size: 15px; font-style: italic; }
 .content { padding: 30px; }
 .input-group { margin-bottom: 24px; }
-.unit-info { font-size: 13px; color: #555; margin-top: 6px; background: #f8f9ff; padding: 8px 12px; border-radius: 8px; border-left: 4px solid #2196f3; font-style: italic; }
+.unit-info { font-size: 13px; color: #555; margin-top: 6px; background: #f8f9ff; padding: 8px 12px; border-radius: 8px; border-left: 4px solid #2196f3; font-style: italic; cursor: pointer; transition: all 0.2s; }
+.unit-info:hover { background: #e8edff; }
 label { display: block; font-weight: 600; margin-bottom: 10px; color: #333; font-size: 16px; }
-select, input[type="number"] { width: 100%; padding: 18px; border: 2px solid #e1e5e9; border-radius: 16px; font-size: 18px; font-weight: 500; transition: all 0.3s ease; background: white; }
-select:focus, input[type="number"]:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 4px rgba(102,126,234,0.15); transform: translateY(-1px); }
+select, input[type="number"], input[type="text"] { width: 100%; padding: 18px; border: 2px solid #e1e5e9; border-radius: 16px; font-size: 18px; font-weight: 500; transition: all 0.3s ease; background: white; }
+select:focus, input[type="number"]:focus, input[type="text"]:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 4px rgba(102,126,234,0.15); transform: translateY(-1px); }
 .result { background: linear-gradient(135deg, #4CAF50, #45a049); color: white; padding: 28px; border-radius: 20px; text-align: center; font-size: 34px; font-weight: 700; margin: 24px 0; box-shadow: 0 12px 30px rgba(76,175,80,0.4); }
 .error { background: linear-gradient(135deg, #f44336, #d32f2f); color: white; padding: 22px; border-radius: 16px; margin: 16px 0; font-size: 18px; font-weight: 600; text-align: center; }
 .warning { background: linear-gradient(135deg, #ff9800, #f57c00); color: white; padding: 22px; border-radius: 16px; margin: 16px 0; font-size: 18px; font-weight: 600; }
@@ -25,11 +25,14 @@ select:focus, input[type="number"]:focus { outline: none; border-color: #667eea;
 .zapas { background: linear-gradient(135deg, #FF9800, #F57C00); color: white; padding: 24px; border-radius: 20px; text-align: center; font-size: 26px; font-weight: 700; margin: 20px 0; box-shadow: 0 10px 25px rgba(255,152,0,0.4); }
 .zapas small { opacity: 0.9; font-size: 14px; display: block; margin-top: 4px; }
 .suggest { background: linear-gradient(135deg, #66bb6a, #4caf50); color: white; padding: 20px; border-radius: 16px; margin: 16px 0; font-size: 18px; font-weight: 600; text-align: center; box-shadow: 0 8px 20px rgba(102,187,106,0.4); }
-.btn-group { display: flex; gap: 12px; margin: 28px 0; }
-button { flex: 1; padding: 18px; border: none; border-radius: 16px; font-size: 17px; font-weight: 600; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; }
+.btn-group { display: flex; gap: 12px; margin: 28px 0; flex-wrap: wrap; }
+button { flex: 1; padding: 18px; border: none; border-radius: 16px; font-size: 17px; font-weight: 600; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; min-width: 120px; }
 .btn-reset { background: linear-gradient(135deg, #ff9800, #fb8c00); color: white; }
 .btn-pdf { background: linear-gradient(135deg, #2196f3, #1976d2); color: white; }
 .btn-unit { background: linear-gradient(135deg, #ff5722, #e64a19); color: white; }
+.btn-copy { background: linear-gradient(135deg, #9c27b0, #7b1fa2); color: white; }
+button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+button:active { transform: translateY(0); }
 .history { background: linear-gradient(135deg, #f8f9fa, #e9ecef); border-radius: 16px; padding: 20px; margin-top: 24px; max-height: 220px; overflow-y: auto; border: 1px solid #dee2e6; }
 .history h4 { margin: 0 0 12px 0; color: #495057; font-size: 16px; }
 .history-item { padding: 14px; border-bottom: 1px solid #dee2e6; font-size: 15px; cursor: pointer; transition: background 0.2s; }
@@ -39,7 +42,10 @@ button { flex: 1; padding: 18px; border: none; border-radius: 16px; font-size: 1
 table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 14px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
 th, td { border: 1px solid #dee2e6; padding: 14px 8px; text-align: center; }
 th { background: linear-gradient(135deg, #667eea, #764ba2); color: white; font-weight: 600; }
-@media (max-width: 480px) { .result { font-size: 28px; padding: 22px; } .container { margin: 10px; border-radius: 20px; } }
+tr:hover { background: #f8f9ff; cursor: pointer; }
+.toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #323232; color: white; padding: 16px 24px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 1000; animation: slideUp 0.3s ease; }
+@keyframes slideUp { from { opacity: 0; transform: translate(-50%, 20px); } to { opacity: 1; transform: translate(-50%, 0); } }
+@media (max-width: 480px) { .result { font-size: 28px; padding: 22px; } .container { margin: 10px; border-radius: 20px; } button { min-width: 100px; font-size: 15px; } }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -53,8 +59,8 @@ th { background: linear-gradient(135deg, #667eea, #764ba2); color: white; font-w
 <div class="content">
 <div class="input-group">
 <label>💡 Średnica kabla:</label>
-<input type="number" id="D" step="0.1" placeholder="15.0">
-<div class="unit-info" id="D-unit">mm | 📏 cale/inch</div>
+<input type="number" id="D" step="0.01" placeholder="15.0" min="0">
+<div class="unit-info" id="D-unit" onclick="toggleUnits()">📏 Kliknij dla przełączenia jednostek</div>
 </div>
 
 <div id="suggestSize" class="suggest" style="display:none;">
@@ -76,20 +82,25 @@ th { background: linear-gradient(135deg, #667eea, #764ba2); color: white; font-w
 
 <div class="input-group">
 <label>Długość kabla:</label>
-<input type="number" id="L" step="0.1" placeholder="12.0">
-<div class="unit-info" id="L-unit">m | 📏 stopy/ft</div>
+<input type="number" id="L" step="0.01" placeholder="12.0" min="0">
+<div class="unit-info" id="L-unit" onclick="toggleUnits()">📏 Kliknij dla przełączenia jednostek</div>
+</div>
+
+<div class="input-group">
+<label>📝 Notatka (opcjonalnie):</label>
+<input type="text" id="note" placeholder="Nr zlecenia / projekt">
 </div>
 
 <div class="btn-group">
-<button onclick="resetCalc()">🔄 Reset</button>
-<button onclick="exportPDF()">📄 PDF</button>
-<button id="unitBtn" onclick="toggleUnits()">📏 Jednostki</button>
+<button class="btn-reset" onclick="resetCalc()">🔄 Reset</button>
+<button class="btn-copy" onclick="copyResult()">📋 Kopiuj</button>
+<button class="btn-pdf" onclick="exportPDF()">📄 PDF</button>
 </div>
 
 <div id="result" class="result">Wpisz średnicę i długość</div>
 <div id="status"></div>
 <div id="zapas" class="zapas" style="display:none;">
-Do cięcia: -- <small>+20cm zapas (10cm×2 końce)</small>
+Do cięcia: -- <small>+zapas na końce</small>
 </div>
 
 <div id="history" class="history" style="display:none;">
@@ -98,17 +109,18 @@ Do cięcia: -- <small>+20cm zapas (10cm×2 końce)</small>
 </div>
 
 <h3>Zakresy Ray 101</h3>
-<table>
+<table id="rangesTable">
 <tr><th>Ray</th><th>Min</th><th>Max</th></tr>
-<tr><td>3.0</td><td>2.5</td><td>5.0</td></tr>
-<tr><td>4.0</td><td>3.5</td><td>7.5</td></tr>
-<tr><td>6.0</td><td>4.5</td><td>9.5</td></tr>
-<tr><td>7.5</td><td>7.0</td><td>14.0</td></tr>
-<tr><td style="font-weight:bold"><b>10.0</b></td><td style="font-weight:bold"><b>8.0</b></td><td style="font-weight:bold"><b>22.0</b></td></tr>
-<tr><td>12.5</td><td>11.0</td><td>24.0</td></tr>
-<tr><td>20.0</td><td>16.0</td><td>38.0</td></tr>
+<tr onclick="selectRay('3.0')"><td>3.0</td><td>2.5</td><td>5.0</td></tr>
+<tr onclick="selectRay('4.0')"><td>4.0</td><td>3.5</td><td>7.5</td></tr>
+<tr onclick="selectRay('6.0')"><td>6.0</td><td>4.5</td><td>9.5</td></tr>
+<tr onclick="selectRay('7.5')"><td>7.5</td><td>7.0</td><td>14.0</td></tr>
+<tr onclick="selectRay('10.0')" style="font-weight:bold"><td><b>10.0</b></td><td><b>8.0</b></td><td><b>22.0</b></td></tr>
+<tr onclick="selectRay('12.5')"><td>12.5</td><td>11.0</td><td>24.0</td></tr>
+<tr onclick="selectRay('20.0')"><td>20.0</td><td>16.0</td><td>38.0</td></tr>
 </table>
-<p style="font-size:13px;color:#666;">L_cut = L_opl + 0.20m | Raychem kalibrowane [web:21]</p>
+<p style="font-size:13px;color:#666;">L_cut = L_opl + 0.20m | Raychem kalibrowane</p>
+</div>
 </div>
 
 <script>
@@ -126,9 +138,16 @@ const ranges = {
 };
 
 function updateUnitsDisplay() {
-  document.getElementById('D-unit').textContent = `mm | 📏 = ${units.dia === 'mm' ? 'cale/inch' : 'mm'}`;
-  document.getElementById('L-unit').textContent = `m | 📏 = ${units.len === 'm' ? 'stopy/ft' : 'm'}`;
-  document.getElementById('unitBtn').textContent = `📏 Jednostki`;
+  const diaText = units.dia === 'mm' ? 'Aktualnie: mm (📏 kliknij dla cali)' : 'Aktualnie: cale (📏 kliknij dla mm)';
+  const lenText = units.len === 'm' ? 'Aktualnie: m (📏 kliknij dla stóp)' : 'Aktualnie: stopy (📏 kliknij dla m)';
+  document.getElementById('D-unit').textContent = diaText;
+  document.getElementById('L-unit').textContent = lenText;
+}
+
+function selectRay(size) {
+  document.getElementById('size').value = size;
+  calc();
+  showToast(`Wybrano Ray-101-${size}mm`);
 }
 
 function suggestRay(D_raw) {
@@ -145,7 +164,7 @@ function suggestRay(D_raw) {
   }
 
   if (suggested) {
-    document.getElementById('suggestedRay').textContent = `${suggested}mm`;
+    document.getElementById('suggestedRay').textContent = `Ray-101-${suggested}mm`;
     suggestDiv.style.display = 'block';
     document.getElementById('size').value = suggested;
     calc();
@@ -158,6 +177,7 @@ function calc() {
   const size = document.getElementById('size').value;
   let L_raw = parseFloat(document.getElementById('L').value);
   let D_raw = parseFloat(document.getElementById('D').value);
+  const note = document.getElementById('note').value;
 
   if (isNaN(L_raw) || isNaN(D_raw) || L_raw <= 0 || D_raw <= 0) {
     document.getElementById('result').textContent = 'Wpisz średnicę i długość';
@@ -173,25 +193,58 @@ function calc() {
   const k = D / data.dref;
   const s = -0.15 * (k - 1) - 0.05 * Math.pow((k - 1), 2);
   const Lopl = L * (1 + s);
-  const L_cut = Math.max(Lopl + 0.20, 0.25);
 
-  document.getElementById('result').textContent = Lopl.toFixed(2) + (units.len === 'ft' ? ' ft' : ' m');
+  const zapas_m = 0.20;
+  const zapas_display = units.len === 'ft' ? (zapas_m / 0.3048) : zapas_m;
+  let L_cut_m = Lopl + zapas_m;
+  let wasForced = false;
+
+  if (L_cut_m < 0.25) {
+    L_cut_m = 0.25;
+    wasForced = true;
+  }
+
+  const L_cut = units.len === 'ft' ? (L_cut_m / 0.3048) : L_cut_m;
+  const Lopl_display = units.len === 'ft' ? (Lopl / 0.3048) : Lopl;
+  const unit_label = units.len === 'ft' ? 'ft' : 'm';
+
+  document.getElementById('result').textContent = Lopl_display.toFixed(2) + ' ' + unit_label;
   document.getElementById('zapas').style.display = 'block';
-  document.getElementById('zapas').innerHTML = `Do cięcia: <strong>${L_cut.toFixed(2)}${units.len === 'ft' ? ' ft' : ' m'}</strong> <small>+20cm (10cm×2 końce)</small>`;
+
+  const zapas_label = units.len === 'ft' ? `+${zapas_display.toFixed(2)}ft zapas` : '+20cm zapas (10cm×2 końce)';
+  document.getElementById('zapas').innerHTML = `Do cięcia: <strong>${L_cut.toFixed(2)} ${unit_label}</strong> <small>${zapas_label}</small>`;
 
   const status = document.getElementById('status');
   const minD_disp = units.dia === 'in' ? (data.min / 25.4).toFixed(2) + ' in' : data.min.toFixed(1) + ' mm';
   const maxD_disp = units.dia === 'in' ? (data.max / 25.4).toFixed(2) + ' in' : data.max.toFixed(1) + ' mm';
 
+  let statusHTML = '';
   if (D < data.min) {
-    status.innerHTML = `<div class="warning">⚠️ ZA MAŁA! Min ${minD_disp}</div>`;
+    statusHTML = `<div class="warning">⚠️ ZA MAŁA! Min ${minD_disp}</div>`;
   } else if (D > data.max) {
-    status.innerHTML = `<div class="error">❌ ZA DUŻA! Max ${maxD_disp}</div>`;
+    statusHTML = `<div class="error">❌ ZA DUŻA! Max ${maxD_disp}</div>`;
   } else {
-    status.innerHTML = `<div class="good">✅ ${minD_disp} - ${maxD_disp}</div>`;
+    statusHTML = `<div class="good">✅ ${minD_disp} - ${maxD_disp}</div>`;
   }
 
-  const entry = {size, L: L_raw.toFixed(2), D: D_raw.toFixed(1), Lopl: Lopl.toFixed(2), cut: L_cut.toFixed(2), time: new Date().toLocaleTimeString()};
+  if (wasForced) {
+    statusHTML += `<div class="warning">⚠️ Wymuszono minimum 0.25m</div>`;
+  }
+
+  status.innerHTML = statusHTML;
+
+  const entry = {
+    size, 
+    L: L_raw.toFixed(2), 
+    D: D_raw.toFixed(2), 
+    Lopl: Lopl_display.toFixed(2), 
+    cut: L_cut.toFixed(2), 
+    time: new Date().toLocaleTimeString(),
+    units_dia: units.dia,
+    units_len: units.len,
+    note: note
+  };
+
   history.unshift(entry);
   history = history.slice(0, 5);
   localStorage.setItem('ray101_history', JSON.stringify(history));
@@ -203,58 +256,137 @@ function resetCalc() {
   document.getElementById('size').value = '10.0';
   document.getElementById('L').value = '';
   document.getElementById('D').value = '';
+  document.getElementById('note').value = '';
   document.getElementById('suggestSize').style.display = 'none';
   document.getElementById('result').textContent = 'Wpisz średnicę i długość';
   document.getElementById('status').innerHTML = '';
   document.getElementById('zapas').style.display = 'none';
-  document.getElementById('history').style.display = 'none';
 }
 
 function toggleUnits() {
+  // Pobierz obecne wartości
+  const D_input = document.getElementById('D');
+  const L_input = document.getElementById('L');
+  let D_val = parseFloat(D_input.value);
+  let L_val = parseFloat(L_input.value);
+
+  // Konwertuj średnicę
+  if (!isNaN(D_val) && D_val > 0) {
+    if (units.dia === 'mm') {
+      // mm -> cale
+      D_val = D_val / 25.4;
+    } else {
+      // cale -> mm
+      D_val = D_val * 25.4;
+    }
+    D_input.value = D_val.toFixed(2);
+  }
+
+  // Konwertuj długość
+  if (!isNaN(L_val) && L_val > 0) {
+    if (units.len === 'm') {
+      // m -> stopy
+      L_val = L_val / 0.3048;
+    } else {
+      // stopy -> m
+      L_val = L_val * 0.3048;
+    }
+    L_input.value = L_val.toFixed(2);
+  }
+
+  // Przełącz jednostki
   units.dia = units.dia === 'mm' ? 'in' : 'mm';
   units.len = units.len === 'm' ? 'ft' : 'm';
-  updateUnitsDisplay();
-  const D_val = parseFloat(document.getElementById('D').value) || 0;
-  suggestRay(D_val);
-  calc();
-}
 
-function updateUnitsDisplay() {
-  document.getElementById('D-unit').textContent = `mm | 📏 = ${units.dia === 'mm' ? 'cale/inch' : 'mm'}`;
-  document.getElementById('L-unit').textContent = `m | 📏 = ${units.len === 'm' ? 'stopy/ft' : 'm'}`;
-  document.getElementById('unitBtn').textContent = `📏 Jednostki`;
+  updateUnitsDisplay();
+
+  // Przelicz sugestię i wynik
+  const D_val_check = parseFloat(D_input.value) || 0;
+  suggestRay(D_val_check);
+  calc();
+
+  // Pokaż komunikat
+  const unitMsg = units.dia === 'in' ? 'Przełączono na cale/stopy' : 'Przełączono na mm/metry';
+  showToast(unitMsg);
 }
 
 function updateHistory() {
   const list = document.getElementById('historyList');
-  list.innerHTML = history.map(h => 
-    `<div class="history-item" onclick="document.getElementById('size').value='${h.size}'; document.getElementById('D').value='${h.D}'; document.getElementById('L').value='${h.L}'; calc();">
-      Ray${h.size} | D${h.D}mm L${h.L}m → tnij ${h.cut}m <span>${h.time}</span>
-    </div>`
-  ).join('');
+  list.innerHTML = history.map(h => {
+    const noteText = h.note ? ` | ${h.note}` : '';
+    return `<div class="history-item" onclick="restoreFromHistory('${h.size}', '${h.D}', '${h.L}', '${h.units_dia}', '${h.units_len}', '${h.note || ''}')">
+      Ray${h.size} | D${h.D}${h.units_dia} L${h.L}${h.units_len} → tnij ${h.cut}${h.units_len}${noteText} <span>${h.time}</span>
+    </div>`;
+  }).join('');
   document.getElementById('history').style.display = history.length ? 'block' : 'none';
 }
 
+function restoreFromHistory(size, D, L, units_dia, units_len, note) {
+  units.dia = units_dia;
+  units.len = units_len;
+  updateUnitsDisplay();
+  document.getElementById('size').value = size;
+  document.getElementById('D').value = D;
+  document.getElementById('L').value = L;
+  document.getElementById('note').value = note;
+  calc();
+  showToast('Przywrócono z historii');
+}
+
+function copyResult() {
+  if (!window.lastCalc) {
+    showToast('Oblicz najpierw!');
+    return;
+  }
+  const noteText = window.lastCalc.note ? ` | ${window.lastCalc.note}` : '';
+  const text = `Ray-101-${window.lastCalc.size} | D=${window.lastCalc.D}${window.lastCalc.units_dia} L=${window.lastCalc.L}${window.lastCalc.units_len} → TNIEJ: ${window.lastCalc.cut}${window.lastCalc.units_len}${noteText}`;
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('✅ Skopiowano do schowka!');
+  }).catch(() => {
+    showToast('❌ Błąd kopiowania');
+  });
+}
+
 function exportPDF() {
-  if (!window.lastCalc) return alert('Oblicz najpierw!');
+  if (!window.lastCalc) {
+    showToast('Oblicz najpierw!');
+    return;
+  }
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
   doc.setFontSize(24);
-  doc.text('Ray 101 - Do cięcia', 20, 30);
+  doc.text('Ray 101 - Do ciecia', 20, 30);
   doc.setFontSize(16);
   doc.text(`Raychem Ray-${window.lastCalc.size}`, 20, 50);
-  doc.text(`Kabel: D=${window.lastCalc.D}mm L=${window.lastCalc.L}m`, 20, 62);
-  doc.text(`Oplot na kablu: ${window.lastCalc.Lopl}m`, 20, 74);
-  doc.text(`<strong>TNIEJ: ${window.lastCalc.cut}m (+20cm zapas)</strong>`, 20, 86);
-  doc.text(`Obliczone: ${window.lastCalc.time}`, 20, 98);
+  doc.text(`Kabel: D=${window.lastCalc.D}${window.lastCalc.units_dia} L=${window.lastCalc.L}${window.lastCalc.units_len}`, 20, 62);
+  doc.text(`Oplot na kablu: ${window.lastCalc.Lopl}${window.lastCalc.units_len}`, 20, 74);
+  doc.text(`TNIEJ: ${window.lastCalc.cut}${window.lastCalc.units_len} (+zapas)`, 20, 86);
+  if (window.lastCalc.note) {
+    doc.text(`Notatka: ${window.lastCalc.note}`, 20, 98);
+  }
+  doc.text(`Obliczone: ${window.lastCalc.time}`, 20, 110);
   doc.save(`Ray101_cut_${window.lastCalc.time.replace(/:/g, '-')}.pdf`);
+  showToast('✅ PDF zapisany!');
+}
+
+function showToast(message) {
+  const existing = document.querySelector('.toast');
+  if (existing) existing.remove();
+
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.textContent = message;
+  document.body.appendChild(toast);
+
+  setTimeout(() => toast.remove(), 2500);
 }
 
 // Inicjalizacja
 document.getElementById('D').addEventListener('input', e => suggestRay(parseFloat(e.target.value) || 0));
 ['size','L'].forEach(id => document.getElementById(id).addEventListener('input', calc));
+document.getElementById('note').addEventListener('input', calc);
 updateUnitsDisplay();
-resetCalc();
+updateHistory();
 </script>
 </body>
 </html>

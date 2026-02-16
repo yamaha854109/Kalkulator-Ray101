@@ -1,73 +1,400 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-<title>🔧 Kalkulator długości cięcia ekranu </title>
+<title>🔧 Kalkulator długości cięcia ekranu</title>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <style>
-* { box-sizing: border-box; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; min-height: 100vh; }
-.container { max-width: 420px; margin: 0 auto; background: white; border-radius: 24px; box-shadow: 0 25px 50px rgba(0,0,0,0.25); overflow: hidden; }
-.header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; }
-.header h1 { margin: 0 0 8px 0; font-size: 26px; font-weight: 700; }
-.header p { margin: 0; opacity: 0.95; font-size: 15px; font-style: italic; }
-.content { padding: 30px; }
-.input-group { margin-bottom: 24px; }
-.unit-info { font-size: 13px; color: #555; margin-top: 6px; background: #f8f9ff; padding: 8px 12px; border-radius: 8px; border-left: 4px solid #2196f3; font-style: italic; cursor: pointer; transition: all 0.2s; }
-.unit-info:hover { background: #e8edff; }
-label { display: block; font-weight: 600; margin-bottom: 10px; color: #333; font-size: 16px; }
-select, input[type="number"], input[type="text"] { width: 100%; padding: 18px; border: 2px solid #e1e5e9; border-radius: 16px; font-size: 18px; font-weight: 500; transition: all 0.3s ease; background: white; }
-select:focus, input[type="number"]:focus, input[type="text"]:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 4px rgba(102,126,234,0.15); transform: translateY(-1px); }
-.result { background: linear-gradient(135deg, #4CAF50, #45a049); color: white; padding: 28px; border-radius: 20px; text-align: center; font-size: 34px; font-weight: 700; margin: 24px 0; box-shadow: 0 12px 30px rgba(76,175,80,0.4); }
-.error { background: linear-gradient(135deg, #f44336, #d32f2f); color: white; padding: 22px; border-radius: 16px; margin: 16px 0; font-size: 18px; font-weight: 600; text-align: center; }
-.warning { background: linear-gradient(135deg, #ff9800, #f57c00); color: white; padding: 22px; border-radius: 16px; margin: 16px 0; font-size: 18px; font-weight: 600; }
-.good { background: linear-gradient(135deg, #4CAF50, #45a049); color: white; padding: 22px; border-radius: 16px; margin: 16px 0; font-size: 18px; font-weight: 600; }
-.zapas { background: linear-gradient(135deg, #FF9800, #F57C00); color: white; padding: 24px; border-radius: 20px; text-align: center; font-size: 26px; font-weight: 700; margin: 20px 0; box-shadow: 0 10px 25px rgba(255,152,0,0.4); }
-.zapas small { opacity: 0.9; font-size: 14px; display: block; margin-top: 4px; }
-.suggest { background: linear-gradient(135deg, #66bb6a, #4caf50); color: white; padding: 20px; border-radius: 16px; margin: 16px 0; font-size: 18px; font-weight: 600; text-align: center; box-shadow: 0 8px 20px rgba(102,187,106,0.4); }
-.btn-group { display: flex; gap: 12px; margin: 28px 0; flex-wrap: wrap; }
-button { flex: 1; padding: 18px; border: none; border-radius: 16px; font-size: 17px; font-weight: 600; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; min-width: 120px; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { 
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+  margin: 0; 
+  padding: 10px; 
+  min-height: 100vh; 
+  overflow-x: hidden;
+}
+.container { 
+  max-width: 420px; 
+  margin: 0 auto; 
+  background: white; 
+  border-radius: 20px; 
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25); 
+  overflow: hidden; 
+}
+.header { 
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+  color: white; 
+  padding: 20px; 
+  text-align: center; 
+  position: relative;
+  transition: all 0.3s ease;
+}
+.header.serial-mode {
+  background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+}
+.header h1 { 
+  margin: 0 0 5px 0; 
+  font-size: 22px; 
+  font-weight: 700; 
+}
+.header p { 
+  margin: 0; 
+  opacity: 0.95; 
+  font-size: 13px; 
+  font-style: italic; 
+}
+.serial-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255,255,255,0.3);
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  display: none;
+}
+.header.serial-mode .serial-badge {
+  display: block;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+.content { padding: 20px; }
+.input-group { margin-bottom: 20px; }
+.input-group.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+.input-group.highlight {
+  animation: highlight 0.5s ease;
+}
+@keyframes highlight {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+label { 
+  display: block; 
+  font-weight: 600; 
+  margin-bottom: 8px; 
+  color: #333; 
+  font-size: 15px; 
+}
+select, input[type="number"], input[type="text"] { 
+  width: 100%; 
+  padding: 16px; 
+  border: 2px solid #e1e5e9; 
+  border-radius: 12px; 
+  font-size: 18px; 
+  font-weight: 500; 
+  transition: all 0.3s ease; 
+  background: white;
+  -webkit-appearance: none;
+  appearance: none;
+}
+input[type="number"] {
+  inputmode: decimal;
+}
+.input-group.highlight input,
+.input-group.highlight select {
+  border-color: #FF6B35;
+  border-width: 3px;
+  box-shadow: 0 0 0 4px rgba(255,107,53,0.15);
+}
+select:focus, input:focus { 
+  outline: none; 
+  border-color: #667eea; 
+  box-shadow: 0 0 0 4px rgba(102,126,234,0.15); 
+}
+.unit-hint { 
+  font-size: 12px; 
+  color: #666; 
+  margin-top: 5px; 
+  font-style: italic; 
+}
+.result { 
+  background: linear-gradient(135deg, #4CAF50, #45a049); 
+  color: white; 
+  padding: 20px; 
+  border-radius: 16px; 
+  text-align: center; 
+  font-size: 28px; 
+  font-weight: 700; 
+  margin: 20px 0; 
+  box-shadow: 0 10px 25px rgba(76,175,80,0.4);
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.result.success {
+  animation: successPulse 0.3s ease;
+}
+@keyframes successPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(76,175,80,0.6); }
+  100% { transform: scale(1); }
+}
+.diagram {
+  text-align: center;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  color: #666;
+  margin-top: 10px;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  display: none;
+}
+.diagram.show {
+  display: block;
+}
+.error { 
+  background: linear-gradient(135deg, #f44336, #d32f2f); 
+  color: white; 
+  padding: 16px; 
+  border-radius: 12px; 
+  margin: 12px 0; 
+  font-size: 15px; 
+  font-weight: 600; 
+  text-align: center; 
+}
+.warning { 
+  background: linear-gradient(135deg, #ff9800, #f57c00); 
+  color: white; 
+  padding: 16px; 
+  border-radius: 12px; 
+  margin: 12px 0; 
+  font-size: 15px; 
+  font-weight: 600; 
+}
+.good { 
+  background: linear-gradient(135deg, #4CAF50, #45a049); 
+  color: white; 
+  padding: 16px; 
+  border-radius: 12px; 
+  margin: 12px 0; 
+  font-size: 15px; 
+  font-weight: 600; 
+}
+.suggest { 
+  background: linear-gradient(135deg, #66bb6a, #4caf50); 
+  color: white; 
+  padding: 16px; 
+  border-radius: 12px; 
+  margin: 12px 0; 
+  font-size: 15px; 
+  font-weight: 600; 
+  text-align: center; 
+  box-shadow: 0 6px 15px rgba(102,187,106,0.4); 
+}
+.btn-group { 
+  display: grid; 
+  grid-template-columns: 1fr 1fr; 
+  gap: 10px; 
+  margin: 20px 0; 
+}
+button { 
+  padding: 16px; 
+  border: none; 
+  border-radius: 12px; 
+  font-size: 15px; 
+  font-weight: 600; 
+  cursor: pointer; 
+  transition: all 0.2s ease; 
+  position: relative; 
+  overflow: hidden;
+  min-height: 48px;
+  touch-action: manipulation;
+}
+button:active { 
+  transform: scale(0.97); 
+}
 .btn-reset { background: linear-gradient(135deg, #ff9800, #fb8c00); color: white; }
 .btn-pdf { background: linear-gradient(135deg, #2196f3, #1976d2); color: white; }
-.btn-unit { background: linear-gradient(135deg, #ff5722, #e64a19); color: white; }
 .btn-copy { background: linear-gradient(135deg, #9c27b0, #7b1fa2); color: white; }
-button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
-button:active { transform: translateY(0); }
-.history { background: linear-gradient(135deg, #f8f9fa, #e9ecef); border-radius: 16px; padding: 20px; margin-top: 24px; max-height: 220px; overflow-y: auto; border: 1px solid #dee2e6; }
-.history h4 { margin: 0 0 12px 0; color: #495057; font-size: 16px; }
-.history-item { padding: 14px; border-bottom: 1px solid #dee2e6; font-size: 15px; cursor: pointer; transition: background 0.2s; }
-.history-item:hover { background: #e9ecef; border-radius: 8px; }
+.btn-serial { background: linear-gradient(135deg, #FF6B35, #F7931E); color: white; }
+.btn-end-serial { background: linear-gradient(135deg, #f44336, #d32f2f); color: white; grid-column: 1 / -1; }
+.btn-next { background: linear-gradient(135deg, #66bb6a, #4caf50); color: white; }
+.history { 
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef); 
+  border-radius: 12px; 
+  padding: 15px; 
+  margin-top: 20px; 
+  max-height: 200px; 
+  overflow-y: auto; 
+  border: 1px solid #dee2e6;
+  display: none;
+}
+.history.show { display: block; }
+.history h4 { 
+  margin: 0 0 10px 0; 
+  color: #495057; 
+  font-size: 14px; 
+}
+.history-item { 
+  padding: 10px; 
+  border-bottom: 1px solid #dee2e6; 
+  font-size: 13px; 
+  cursor: pointer; 
+  transition: background 0.2s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.history-item:hover { 
+  background: #e9ecef; 
+  border-radius: 6px; 
+}
 .history-item:last-child { border-bottom: none; }
-.history-item span { color: #6c757d; font-size: 13px; }
-table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 14px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-th, td { border: 1px solid #dee2e6; padding: 14px 8px; text-align: center; }
-th { background: linear-gradient(135deg, #667eea, #764ba2); color: white; font-weight: 600; }
-tr:hover { background: #f8f9ff; cursor: pointer; }
-.toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #323232; color: white; padding: 16px 24px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 1000; animation: slideUp 0.3s ease; }
-@keyframes slideUp { from { opacity: 0; transform: translate(-50%, 20px); } to { opacity: 1; transform: translate(-50%, 0); } }
-@media (max-width: 480px) { .result { font-size: 28px; padding: 22px; } .container { margin: 10px; border-radius: 20px; } button { min-width: 100px; font-size: 15px; } }
+.history-item.current {
+  background: #d4edda;
+  border-left: 3px solid #4CAF50;
+}
+.history-item span { 
+  color: #6c757d; 
+  font-size: 11px; 
+}
+.ranges-section {
+  margin-top: 20px;
+}
+.ranges-toggle {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  padding: 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  text-align: center;
+  font-size: 14px;
+  user-select: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.ranges-toggle:active {
+  transform: scale(0.98);
+}
+.ranges-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+.ranges-content.expanded {
+  max-height: 400px;
+}
+table { 
+  width: 100%; 
+  border-collapse: collapse; 
+  margin: 15px 0; 
+  font-size: 13px; 
+  border-radius: 10px; 
+  overflow: hidden; 
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1); 
+}
+th, td { 
+  border: 1px solid #dee2e6; 
+  padding: 12px 6px; 
+  text-align: center; 
+}
+th { 
+  background: linear-gradient(135deg, #667eea, #764ba2); 
+  color: white; 
+  font-weight: 600; 
+  font-size: 12px;
+}
+tr { 
+  cursor: pointer; 
+  transition: background 0.2s; 
+}
+tr:hover { 
+  background: #f8f9ff; 
+}
+tr.selected {
+  background: #d4edda;
+  font-weight: 600;
+}
+.toast { 
+  position: fixed; 
+  bottom: 20px; 
+  left: 50%; 
+  transform: translateX(-50%); 
+  background: #323232; 
+  color: white; 
+  padding: 14px 20px; 
+  border-radius: 8px; 
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3); 
+  z-index: 1000; 
+  animation: slideUp 0.3s ease;
+  font-size: 14px;
+  max-width: 90%;
+}
+@keyframes slideUp { 
+  from { opacity: 0; transform: translate(-50%, 20px); } 
+  to { opacity: 1; transform: translate(-50%, 0); } 
+}
+.serial-locked-info {
+  background: #fff3cd;
+  border: 2px solid #ffc107;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 15px;
+  font-size: 13px;
+  color: #856404;
+  display: none;
+  text-align: center;
+}
+.serial-locked-info.show {
+  display: block;
+}
+.shortcuts-hint {
+  font-size: 11px;
+  color: #999;
+  text-align: center;
+  margin-top: 15px;
+  padding: 8px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+@media (max-width: 380px) {
+  .result { font-size: 24px; padding: 16px; }
+  button { font-size: 14px; padding: 14px; }
+  .header h1 { font-size: 20px; }
+}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 <div class="container">
-<div class="header">
+<div class="header" id="header">
 <h1>🔧 Kalkulator długości cięcia ekranu</h1>
-<p>Odpad <strong>zawsze 20cm</strong> | Raychem fizyka</p>
+<p id="headerSubtitle">Profesjonalne obliczenia Ray 101</p>
+<div class="serial-badge">🔄 SERIA</div>
 </div>
 
 <div class="content">
-<div class="input-group">
+<!-- Serial mode info -->
+<div class="serial-locked-info" id="serialInfo">
+🔒 <strong>Ray <span id="serialRay">--</span> | Ø<span id="serialDia">--</span> | +<span id="serialBuffer">--</span></strong>
+<br><small>Zmień tylko długość kabla</small>
+</div>
+
+<!-- Input fields -->
+<div class="input-group" id="groupD">
 <label>💡 Średnica kabla:</label>
 <input type="number" id="D" step="0.01" placeholder="15.0" min="0">
-<div class="unit-info" id="D-unit" onclick="toggleUnits()">📏 Kliknij dla przełączenia jednostek</div>
+<div class="unit-hint" id="D-unit">Aktualnie: mm (📏 tap dla cali)</div>
 </div>
 
 <div id="suggestSize" class="suggest" style="display:none;">
 💡 <strong>SUGEROWANY: <span id="suggestedRay">--</span></strong>
 </div>
 
-<div class="input-group">
+<div class="input-group" id="groupSize">
 <label>Rozmiar Ray 101:</label>
 <select id="size">
 <option value="3.0">Ray-101-3.0mm (2.5-5.0)</option>
@@ -80,52 +407,88 @@ tr:hover { background: #f8f9ff; cursor: pointer; }
 </select>
 </div>
 
-<div class="input-group">
-<label>Długość kabla:</label>
+<div class="input-group" id="groupL">
+<label id="labelL">📏 Długość kabla:</label>
 <input type="number" id="L" step="0.01" placeholder="12.0" min="0">
-<div class="unit-info" id="L-unit" onclick="toggleUnits()">📏 Kliknij dla przełączenia jednostek</div>
+<div class="unit-hint" id="L-unit">Aktualnie: m (📏 tap dla stóp)</div>
 </div>
 
-<div class="input-group">
+<div class="input-group" id="groupBuffer">
+<label>🔧 Zapas na montaż:</label>
+<select id="buffer">
+<option value="0.10">10 cm</option>
+<option value="0.15">15 cm</option>
+<option value="0.20" selected>20 cm (domyślnie)</option>
+<option value="0.25">25 cm</option>
+<option value="0.30">30 cm</option>
+<option value="custom">Własna wartość...</option>
+</select>
+<input type="number" id="customBuffer" step="0.01" min="0" placeholder="Wpisz w metrach" style="display:none; margin-top:10px;">
+</div>
+
+<div class="input-group" id="groupNote">
 <label>📝 Notatka (opcjonalnie):</label>
 <input type="text" id="note" placeholder="Nr zlecenia / projekt">
 </div>
 
-<div class="btn-group">
+<!-- Buttons -->
+<div class="btn-group" id="normalButtons">
 <button class="btn-reset" onclick="resetCalc()">🔄 Reset</button>
 <button class="btn-copy" onclick="copyResult()">📋 Kopiuj</button>
+<button class="btn-serial" onclick="startSerial()">⚡ Seria</button>
 <button class="btn-pdf" onclick="exportPDF()">📄 PDF</button>
 </div>
 
-<div id="result" class="result">Wpisz średnicę i długość</div>
-<div id="status"></div>
-<div id="zapas" class="zapas" style="display:none;">
-Do cięcia: -- <small>+zapas na końce</small>
+<div class="btn-group" id="serialButtons" style="display:none;">
+<button class="btn-copy" onclick="copyResult()">📋 Kopiuj</button>
+<button class="btn-next" onclick="nextInSerial()">➕ Następna</button>
+<button class="btn-end-serial" onclick="endSerial()">🛑 Zakończ serię</button>
 </div>
 
-<div id="history" class="history" style="display:none;">
-<h4>📋 Ostatnie (kliknij przywróć)</h4>
+<!-- Result -->
+<div id="result" class="result">Wpisz średnicę i długość</div>
+<div id="diagram" class="diagram"></div>
+<div id="status"></div>
+
+<!-- History -->
+<div id="history" class="history">
+<h4 id="historyTitle">📋 Ostatnie obliczenia</h4>
 <div id="historyList"></div>
 </div>
 
-<h3>Zakresy Ray 101</h3>
+<!-- Ranges table (collapsible) -->
+<div class="ranges-section">
+<div class="ranges-toggle" onclick="toggleRanges()">
+<span>📋 Zakresy Ray 101</span>
+<span id="rangesArrow">▼</span>
+</div>
+<div class="ranges-content" id="rangesContent">
 <table id="rangesTable">
-<tr><th>Ray</th><th>Min</th><th>Max</th></tr>
+<tr><th>Ray</th><th>Min (mm)</th><th>Max (mm)</th></tr>
 <tr onclick="selectRay('3.0')"><td>3.0</td><td>2.5</td><td>5.0</td></tr>
 <tr onclick="selectRay('4.0')"><td>4.0</td><td>3.5</td><td>7.5</td></tr>
 <tr onclick="selectRay('6.0')"><td>6.0</td><td>4.5</td><td>9.5</td></tr>
 <tr onclick="selectRay('7.5')"><td>7.5</td><td>7.0</td><td>14.0</td></tr>
-<tr onclick="selectRay('10.0')" style="font-weight:bold"><td><b>10.0</b></td><td><b>8.0</b></td><td><b>22.0</b></td></tr>
+<tr onclick="selectRay('10.0')" data-ray="10.0"><td>10.0</td><td>8.0</td><td>22.0</td></tr>
 <tr onclick="selectRay('12.5')"><td>12.5</td><td>11.0</td><td>24.0</td></tr>
 <tr onclick="selectRay('20.0')"><td>20.0</td><td>16.0</td><td>38.0</td></tr>
 </table>
-<p style="font-size:13px;color:#666;">L_cut = L_opl + 0.20m | Raychem kalibrowane</p>
+<p style="font-size:11px;color:#666;text-align:center;margin:10px 0;">L_cut = L_opl + zapas | Raychem kalibrowane</p>
+</div>
+</div>
+
+<div class="shortcuts-hint">
+💡 Enter→przelicz | Podwójny tap jednostki→zmień
+</div>
 </div>
 </div>
 
 <script>
 let units = {dia: 'mm', len: 'm'};
 let history = JSON.parse(localStorage.getItem('ray101_history') || '[]');
+let serialMode = false;
+let serialCounter = 1;
+let serialHistory = [];
 
 const ranges = {
 "3.0": {min:2.5, max:5.0, dref:3.75},
@@ -138,16 +501,41 @@ const ranges = {
 };
 
 function updateUnitsDisplay() {
-  const diaText = units.dia === 'mm' ? 'Aktualnie: mm (📏 kliknij dla cali)' : 'Aktualnie: cale (📏 kliknij dla mm)';
-  const lenText = units.len === 'm' ? 'Aktualnie: m (📏 kliknij dla stóp)' : 'Aktualnie: stopy (📏 kliknij dla m)';
+  const diaText = units.dia === 'mm' ? 'Aktualnie: mm (📏 tap dla cali)' : 'Aktualnie: cale (📏 tap dla mm)';
+  const lenText = units.len === 'm' ? 'Aktualnie: m (📏 tap dla stóp)' : 'Aktualnie: stopy (📏 tap dla m)';
   document.getElementById('D-unit').textContent = diaText;
   document.getElementById('L-unit').textContent = lenText;
 }
 
+function toggleRanges() {
+  const content = document.getElementById('rangesContent');
+  const arrow = document.getElementById('rangesArrow');
+  content.classList.toggle('expanded');
+  arrow.textContent = content.classList.contains('expanded') ? '▲' : '▼';
+}
+
 function selectRay(size) {
   document.getElementById('size').value = size;
+  updateSelectedRow();
   calc();
   showToast(`Wybrano Ray-101-${size}mm`);
+}
+
+function updateSelectedRow() {
+  const size = document.getElementById('size').value;
+  document.querySelectorAll('#rangesTable tr').forEach(row => {
+    row.classList.remove('selected');
+  });
+  document.querySelectorAll(`#rangesTable tr[data-ray="${size}"]`).forEach(row => {
+    row.classList.add('selected');
+  });
+  const allRows = document.querySelectorAll('#rangesTable tr');
+  allRows.forEach(row => {
+    const cells = row.querySelectorAll('td');
+    if(cells.length > 0 && cells[0].textContent === size) {
+      row.classList.add('selected');
+    }
+  });
 }
 
 function suggestRay(D_raw) {
@@ -167,10 +555,20 @@ function suggestRay(D_raw) {
     document.getElementById('suggestedRay').textContent = `Ray-101-${suggested}mm`;
     suggestDiv.style.display = 'block';
     document.getElementById('size').value = suggested;
+    updateSelectedRow();
     calc();
   } else {
     suggestDiv.style.display = 'none';
   }
+}
+
+function getBuffer() {
+  const bufferSelect = document.getElementById('buffer');
+  if(bufferSelect.value === 'custom') {
+    const custom = parseFloat(document.getElementById('customBuffer').value);
+    return isNaN(custom) || custom < 0 ? 0.20 : custom;
+  }
+  return parseFloat(bufferSelect.value);
 }
 
 function calc() {
@@ -181,8 +579,9 @@ function calc() {
 
   if (isNaN(L_raw) || isNaN(D_raw) || L_raw <= 0 || D_raw <= 0) {
     document.getElementById('result').textContent = 'Wpisz średnicę i długość';
+    document.getElementById('result').classList.remove('success');
     document.getElementById('status').innerHTML = '';
-    document.getElementById('zapas').style.display = 'none';
+    document.getElementById('diagram').classList.remove('show');
     return;
   }
 
@@ -194,7 +593,7 @@ function calc() {
   const s = -0.15 * (k - 1) - 0.05 * Math.pow((k - 1), 2);
   const Lopl = L * (1 + s);
 
-  const zapas_m = 0.20;
+  const zapas_m = getBuffer();
   const zapas_display = units.len === 'ft' ? (zapas_m / 0.3048) : zapas_m;
   let L_cut_m = Lopl + zapas_m;
   let wasForced = false;
@@ -208,11 +607,18 @@ function calc() {
   const Lopl_display = units.len === 'ft' ? (Lopl / 0.3048) : Lopl;
   const unit_label = units.len === 'ft' ? 'ft' : 'm';
 
-  document.getElementById('result').textContent = Lopl_display.toFixed(2) + ' ' + unit_label;
-  document.getElementById('zapas').style.display = 'block';
+  const resultEl = document.getElementById('result');
+  resultEl.textContent = `✅ TNIJ: ${L_cut.toFixed(2)} ${unit_label}`;
+  resultEl.classList.add('success');
+  setTimeout(() => resultEl.classList.remove('success'), 300);
 
-  const zapas_label = units.len === 'ft' ? `+${zapas_display.toFixed(2)}ft zapas` : '+20cm zapas (10cm×2 końce)';
-  document.getElementById('zapas').innerHTML = `Do cięcia: <strong>${L_cut.toFixed(2)} ${unit_label}</strong> <small>${zapas_label}</small>`;
+  // Diagram
+  const bufferHalf = (zapas_display / 2).toFixed(2);
+  const bufferUnit = units.len === 'ft' ? 'ft' : 'cm';
+  const bufferHalfVal = units.len === 'ft' ? bufferHalf : (zapas_display * 100 / 2).toFixed(0);
+  const diagramEl = document.getElementById('diagram');
+  diagramEl.innerHTML = `|--${bufferHalfVal}${bufferUnit}--| OPLOT ${Lopl_display.toFixed(2)}${unit_label} |--${bufferHalfVal}${bufferUnit}--|`;
+  diagramEl.classList.add('show');
 
   const status = document.getElementById('status');
   const minD_disp = units.dia === 'in' ? (data.min / 25.4).toFixed(2) + ' in' : data.min.toFixed(1) + ' mm';
@@ -239,17 +645,30 @@ function calc() {
     D: D_raw.toFixed(2), 
     Lopl: Lopl_display.toFixed(2), 
     cut: L_cut.toFixed(2), 
+    buffer: zapas_display.toFixed(2),
     time: new Date().toLocaleTimeString(),
     units_dia: units.dia,
     units_len: units.len,
     note: note
   };
 
-  history.unshift(entry);
-  history = history.slice(0, 5);
-  localStorage.setItem('ray101_history', JSON.stringify(history));
-  updateHistory();
+  if(serialMode) {
+    serialHistory.unshift({...entry, serial: serialCounter});
+    updateHistory();
+  } else {
+    history.unshift(entry);
+    history = history.slice(0, 5);
+    localStorage.setItem('ray101_history', JSON.stringify(history));
+    updateHistory();
+  }
+
   window.lastCalc = entry;
+  updateSelectedRow();
+
+  // Haptic feedback if available
+  if(navigator.vibrate) {
+    navigator.vibrate(50);
+  }
 }
 
 function resetCalc() {
@@ -257,71 +676,173 @@ function resetCalc() {
   document.getElementById('L').value = '';
   document.getElementById('D').value = '';
   document.getElementById('note').value = '';
+  document.getElementById('buffer').value = '0.20';
+  document.getElementById('customBuffer').style.display = 'none';
   document.getElementById('suggestSize').style.display = 'none';
   document.getElementById('result').textContent = 'Wpisz średnicę i długość';
+  document.getElementById('result').classList.remove('success');
   document.getElementById('status').innerHTML = '';
-  document.getElementById('zapas').style.display = 'none';
+  document.getElementById('diagram').classList.remove('show');
+  updateSelectedRow();
+  showToast('🔄 Reset wykonany');
 }
 
 function toggleUnits() {
-  // Pobierz obecne wartości
   const D_input = document.getElementById('D');
   const L_input = document.getElementById('L');
   let D_val = parseFloat(D_input.value);
   let L_val = parseFloat(L_input.value);
 
-  // Konwertuj średnicę
   if (!isNaN(D_val) && D_val > 0) {
-    if (units.dia === 'mm') {
-      // mm -> cale
-      D_val = D_val / 25.4;
-    } else {
-      // cale -> mm
-      D_val = D_val * 25.4;
-    }
+    D_val = units.dia === 'mm' ? D_val / 25.4 : D_val * 25.4;
     D_input.value = D_val.toFixed(2);
   }
 
-  // Konwertuj długość
   if (!isNaN(L_val) && L_val > 0) {
-    if (units.len === 'm') {
-      // m -> stopy
-      L_val = L_val / 0.3048;
-    } else {
-      // stopy -> m
-      L_val = L_val * 0.3048;
-    }
+    L_val = units.len === 'm' ? L_val / 0.3048 : L_val * 0.3048;
     L_input.value = L_val.toFixed(2);
   }
 
-  // Przełącz jednostki
   units.dia = units.dia === 'mm' ? 'in' : 'mm';
   units.len = units.len === 'm' ? 'ft' : 'm';
 
   updateUnitsDisplay();
 
-  // Przelicz sugestię i wynik
   const D_val_check = parseFloat(D_input.value) || 0;
   suggestRay(D_val_check);
   calc();
 
-  // Pokaż komunikat
   const unitMsg = units.dia === 'in' ? 'Przełączono na cale/stopy' : 'Przełączono na mm/metry';
   showToast(unitMsg);
 }
 
+function startSerial() {
+  const D = parseFloat(document.getElementById('D').value);
+  const size = document.getElementById('size').value;
+  const buffer = getBuffer();
+
+  if(!D || D <= 0) {
+    showToast('❌ Wpisz średnicę kabla!');
+    return;
+  }
+
+  serialMode = true;
+  serialCounter = 1;
+  serialHistory = [];
+
+  // Lock fields
+  document.getElementById('groupD').classList.add('disabled');
+  document.getElementById('groupSize').classList.add('disabled');
+  document.getElementById('groupBuffer').classList.add('disabled');
+  document.getElementById('groupNote').classList.add('disabled');
+
+  // Highlight length field
+  document.getElementById('groupL').classList.add('highlight');
+
+  // Update UI
+  document.getElementById('header').classList.add('serial-mode');
+  document.getElementById('headerSubtitle').textContent = `Seria produkcyjna - Wiązka #${serialCounter}`;
+  document.getElementById('serialInfo').classList.add('show');
+  document.getElementById('serialRay').textContent = size;
+  document.getElementById('serialDia').textContent = D.toFixed(1) + units.dia;
+  document.getElementById('serialBuffer').textContent = (buffer * (units.len === 'ft' ? 1/0.3048 : 100)).toFixed(0) + (units.len === 'ft' ? 'ft' : 'cm');
+
+  // Switch buttons
+  document.getElementById('normalButtons').style.display = 'none';
+  document.getElementById('serialButtons').style.display = 'grid';
+
+  // Update history title
+  document.getElementById('historyTitle').textContent = '📊 Historia serii (ostatnie 5)';
+  document.getElementById('history').classList.add('show');
+
+  // Focus length field
+  document.getElementById('L').value = '';
+  document.getElementById('L').focus();
+
+  // Update label
+  document.getElementById('labelL').textContent = `📏 Długość wiązki #${serialCounter}:`;
+
+  showToast('⚡ Tryb seryjny aktywny!');
+}
+
+function nextInSerial() {
+  if(!window.lastCalc) {
+    showToast('❌ Oblicz najpierw!');
+    return;
+  }
+
+  serialCounter++;
+  document.getElementById('headerSubtitle').textContent = `Seria produkcyjna - Wiązka #${serialCounter}`;
+  document.getElementById('labelL').textContent = `📏 Długość wiązki #${serialCounter}:`;
+  document.getElementById('L').value = '';
+  document.getElementById('L').focus();
+
+  showToast(`✅ #${serialCounter-1} zapisana`);
+}
+
+function endSerial() {
+  serialMode = false;
+
+  // Unlock fields
+  document.getElementById('groupD').classList.remove('disabled');
+  document.getElementById('groupSize').classList.remove('disabled');
+  document.getElementById('groupBuffer').classList.remove('disabled');
+  document.getElementById('groupNote').classList.remove('disabled');
+  document.getElementById('groupL').classList.remove('highlight');
+
+  // Update UI
+  document.getElementById('header').classList.remove('serial-mode');
+  document.getElementById('headerSubtitle').textContent = 'Profesjonalne obliczenia Ray 101';
+  document.getElementById('serialInfo').classList.remove('show');
+
+  // Switch buttons
+  document.getElementById('normalButtons').style.display = 'grid';
+  document.getElementById('serialButtons').style.display = 'none';
+
+  // Update history
+  document.getElementById('historyTitle').textContent = '📋 Ostatnie obliczenia';
+  history = [...serialHistory, ...history].slice(0, 5);
+  localStorage.setItem('ray101_history', JSON.stringify(history));
+
+  // Reset label
+  document.getElementById('labelL').textContent = '📏 Długość kabla:';
+
+  const count = serialHistory.length;
+  serialHistory = [];
+  serialCounter = 1;
+  updateHistory();
+
+  showToast(`🛑 Seria zakończona (${count} wiązek)`);
+}
+
 function updateHistory() {
   const list = document.getElementById('historyList');
-  list.innerHTML = history.map(h => {
+  const dataToShow = serialMode ? serialHistory : history;
+
+  if(dataToShow.length === 0) {
+    document.getElementById('history').classList.remove('show');
+    return;
+  }
+
+  document.getElementById('history').classList.add('show');
+
+  list.innerHTML = dataToShow.map((h, idx) => {
     const noteText = h.note ? ` | ${h.note}` : '';
-    return `<div class="history-item" onclick="restoreFromHistory('${h.size}', '${h.D}', '${h.L}', '${h.units_dia}', '${h.units_len}', '${h.note || ''}')">
-      Ray${h.size} | D${h.D}${h.units_dia} L${h.L}${h.units_len} → tnij ${h.cut}${h.units_len}${noteText} <span>${h.time}</span>
+    const serialNum = h.serial ? `#${h.serial}: ` : '';
+    const currentClass = serialMode && idx === 0 ? 'current' : '';
+    return `<div class="history-item ${currentClass}" onclick="restoreFromHistory('${h.size}', '${h.D}', '${h.L}', '${h.units_dia}', '${h.units_len}', '${h.note || ''}')">
+      <div>${serialNum}L${h.L}${h.units_len} → ${h.cut}${h.units_len}${noteText}</div>
+      <span>${h.time}</span>
     </div>`;
   }).join('');
-  document.getElementById('history').style.display = history.length ? 'block' : 'none';
 }
 
 function restoreFromHistory(size, D, L, units_dia, units_len, note) {
+  if(serialMode) {
+    showToast('❌ Zakończ serię aby przywrócić');
+    return;
+  }
+
   units.dia = units_dia;
   units.len = units_len;
   updateUnitsDisplay();
@@ -330,18 +851,19 @@ function restoreFromHistory(size, D, L, units_dia, units_len, note) {
   document.getElementById('L').value = L;
   document.getElementById('note').value = note;
   calc();
-  showToast('Przywrócono z historii');
+  showToast('✅ Przywrócono z historii');
 }
 
 function copyResult() {
   if (!window.lastCalc) {
-    showToast('Oblicz najpierw!');
+    showToast('❌ Oblicz najpierw!');
     return;
   }
   const noteText = window.lastCalc.note ? ` | ${window.lastCalc.note}` : '';
   const text = `Ray-101-${window.lastCalc.size} | D=${window.lastCalc.D}${window.lastCalc.units_dia} L=${window.lastCalc.L}${window.lastCalc.units_len} → TNIEJ: ${window.lastCalc.cut}${window.lastCalc.units_len}${noteText}`;
   navigator.clipboard.writeText(text).then(() => {
-    showToast('✅ Skopiowano do schowka!');
+    showToast('✅ Skopiowano!');
+    if(navigator.vibrate) navigator.vibrate([50, 30, 50]);
   }).catch(() => {
     showToast('❌ Błąd kopiowania');
   });
@@ -349,7 +871,7 @@ function copyResult() {
 
 function exportPDF() {
   if (!window.lastCalc) {
-    showToast('Oblicz najpierw!');
+    showToast('❌ Oblicz najpierw!');
     return;
   }
   const { jsPDF } = window.jspdf;
@@ -360,12 +882,12 @@ function exportPDF() {
   doc.text(`Raychem Ray-${window.lastCalc.size}`, 20, 50);
   doc.text(`Kabel: D=${window.lastCalc.D}${window.lastCalc.units_dia} L=${window.lastCalc.L}${window.lastCalc.units_len}`, 20, 62);
   doc.text(`Oplot na kablu: ${window.lastCalc.Lopl}${window.lastCalc.units_len}`, 20, 74);
-  doc.text(`TNIEJ: ${window.lastCalc.cut}${window.lastCalc.units_len} (+zapas)`, 20, 86);
+  doc.text(`TNIEJ: ${window.lastCalc.cut}${window.lastCalc.units_len} (+${window.lastCalc.buffer}${window.lastCalc.units_len} zapas)`, 20, 86);
   if (window.lastCalc.note) {
     doc.text(`Notatka: ${window.lastCalc.note}`, 20, 98);
   }
   doc.text(`Obliczone: ${window.lastCalc.time}`, 20, 110);
-  doc.save(`Ray101_cut_${window.lastCalc.time.replace(/:/g, '-')}.pdf`);
+  doc.save(`Ray101_${window.lastCalc.time.replace(/:/g, '-')}.pdf`);
   showToast('✅ PDF zapisany!');
 }
 
@@ -381,12 +903,59 @@ function showToast(message) {
   setTimeout(() => toast.remove(), 2500);
 }
 
-// Inicjalizacja
+// Buffer select handler
+document.getElementById('buffer').addEventListener('change', function() {
+  const customInput = document.getElementById('customBuffer');
+  if(this.value === 'custom') {
+    customInput.style.display = 'block';
+    customInput.focus();
+  } else {
+    customInput.style.display = 'none';
+    calc();
+  }
+});
+
+document.getElementById('customBuffer').addEventListener('input', calc);
+
+// Keyboard shortcuts
+document.addEventListener('keydown', function(e) {
+  if(e.key === 'Enter' && (document.activeElement.id === 'L' || document.activeElement.id === 'D')) {
+    calc();
+    if(serialMode) {
+      setTimeout(() => {
+        copyResult();
+        setTimeout(() => nextInSerial(), 500);
+      }, 300);
+    }
+  }
+  if(e.key === 'Escape' && serialMode) {
+    endSerial();
+  }
+});
+
+// Double tap on unit hints to toggle
+let tapCount = 0;
+let tapTimer = null;
+['D-unit', 'L-unit'].forEach(id => {
+  document.getElementById(id).addEventListener('click', function() {
+    tapCount++;
+    if(tapCount === 1) {
+      tapTimer = setTimeout(() => { tapCount = 0; }, 300);
+    } else if(tapCount === 2) {
+      clearTimeout(tapTimer);
+      tapCount = 0;
+      toggleUnits();
+    }
+  });
+});
+
+// Initialize
 document.getElementById('D').addEventListener('input', e => suggestRay(parseFloat(e.target.value) || 0));
 ['size','L'].forEach(id => document.getElementById(id).addEventListener('input', calc));
 document.getElementById('note').addEventListener('input', calc);
 updateUnitsDisplay();
 updateHistory();
+updateSelectedRow();
 </script>
 </body>
 </html>
